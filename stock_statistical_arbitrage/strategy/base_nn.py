@@ -18,9 +18,13 @@ from torch import nn, optim
 from torch.utils.data import DataLoader, Dataset, Sampler
 from torchmetrics import MeanAbsolutePercentageError, MeanMetric
 from tqdm import tqdm
-from trader.utils import CategoryEncoder, init_obj_dict, read_from_yaml
 
 from stock_statistical_arbitrage.strategy import StatisticalArbitrageStrategy
+from stock_statistical_arbitrage.utils import (
+    CategoryEncoder,
+    init_obj_dict,
+    read_from_yaml,
+)
 
 
 class BaseDataset(Dataset):
