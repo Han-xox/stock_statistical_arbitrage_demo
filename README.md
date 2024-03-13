@@ -1,10 +1,10 @@
 # Stock Statistical Arbitrage Demo
 
 
-<mark>THIS REPO IS FOR DEMONSTRATION PURPOSES ONLY, CORE CODE HAS INTENTIONALLY BEEN REMOVED. DO NOT USE FOR COMMERCIAL PURPOSES. </mark>
+**_THIS REPO IS FOR DEMONSTRATION PURPOSES ONLY, CORE CODE HAS INTENTIONALLY BEEN REMOVED. DO NOT USE FOR COMMERCIAL PURPOSES._**
 
 Minimal code for statistical arbitrage strategies on Chinese stock market:
-* Lightweight data management: raw data is purely managed on local file system & datasets can be easily made and distributed to wherever computation resources(GPU/TPU) are.
+* Lightweight data management: raw data is purely managed on local/shared file system & datasets can be easily made and distributed to wherever computation resources(GPU/TPU) are.
 
 ![Data Management](./images/data_management.png)
 
