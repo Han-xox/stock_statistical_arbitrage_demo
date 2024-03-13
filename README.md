@@ -28,11 +28,17 @@ init_args:
     embedding: 
         class_path: stock_statistical_arbitrage.nn.EmbeddingMachine
         init_args:
+            embedding_sizes:
+                - 8192
+                - 64
+            embedding_dims:
+                - 4
+                - 4
     predictor:
         class_path: stock_statistical_arbitrage.nn.MLP
         init_args:
             layer_dims:
-            - 64
+            - 72 # 32 * 2 + 4 + 4
             - 32
             - 1
             dropout: 0.1
