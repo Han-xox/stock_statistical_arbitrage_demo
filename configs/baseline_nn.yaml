@@ -1,0 +1,109 @@
+## strategy basic settings
+holding_period: 10
+exec_price: vwap
+base_dataset_path: PATH_TO_BASE_DATASET
+
+## config for training
+train_config:
+
+  ## experiment tracking config
+  experiment:
+    tracking_uri: YOUR_TRACKING_URL_HERE
+    experiment_name: baseline
+    run_name: baseline_nn
+    seed: 1024
+
+  ## data related
+  dataset:
+    features_path: PATH_TO_FEATURES
+    window_size: 40
+    cat_features:
+      - stock_id
+    ts_features:
+      - adjusted_open
+      - adjusted_high
+      - adjusted_low
+      - adjusted_close
+      - adjusted_vwap
+      - volume
+      - value
+      - amount
+    cs_features:
+      - turnover
+      - pct_change
+    target_type: YOUR_TARGET_TYPE
+
+  ## cross validation config
+  cv:
+    cv_strategy: custom_split
+    description: 2017-2023, window 5 year, step 6 month
+    # 5 year training & 1/2 year validation & 1 month preventing data leak
+    custom_calendar:
+    # 2017
+      - [["20120101", "20161130"], ["20170101", "20170630"]]
+      - [["20120630", "20170531"], ["20170701", "20171231"]]
+    # 2018
+      - [["20130101", "20171130"], ["20180101", "20180630"]]
+      - [["20130630", "20180531"], ["20180701", "20181231"]]
+    # 2019
+      - [["20140101", "20181130"], ["20190101", "20190630"]]
+      - [["20140630", "20190531"], ["20190701", "20191231"]]
+    # 2020
+      - [["20150101", "20191130"], ["20200101", "20200630"]]
+      - [["20150630", "20200531"], ["20200701", "20201231"]]
+    # 2021
+      - [["20160101", "20201130"], ["20210101", "20210630"]]
+      - [["20160630", "20210531"], ["20210701", "20211231"]]
+    # 2022
+      - [["20170101", "20211130"], ["20220101", "20220630"]]
+      - [["20170630", "20220531"], ["20220701", "20221231"]]
+    # 2023
+      - [["20180101", "20221130"], ["20230101", "20230630"]]
+      - [["20180630", "20230531"], ["20230701", "20231231"]]
+
+  ## dataloader parameters
+  dataloader:
+    batch_size: 4096
+    num_workers: 20
+
+  ## model config
+  model:
+    class_path: stock_statistical_arbitrage.strategy.base_nn.BaseModel
+    init_args:
+      encoder:
+        class_path: stock_statistical_arbitrage.nn.RNN
+        init_args:
+          cell_type: GRU
+          channel_dim: 10
+          model_dim: 32
+          num_layers: 1
+          bidirectional: True
+          dropout: 0.1
+      embedding: null
+      predictor:
+        class_path: stock_statistical_arbitrage.nn.MLP
+        init_args:
+          layer_dims:
+            - 64
+            - 32
+            - 1
+          dropout: 0.1
+      lr: 0.0001
+      verbose: False
+
+  ## training
+  trainer:
+    accumulate_grad_batches: 1
+    check_val_every_n_epoch: 1
+    accelerator: auto
+    strategy: auto
+    devices: 1
+    precision: 32-true
+    max_epochs: 100
+
+  callbacks:
+    monitor: val-loss
+    mode: min
+    patience: 10
+    
+  save_things: True

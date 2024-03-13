@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "stock_statistical_arbitrage"
+version = "1.0"
+description = "Demo code for statistical arbitrage strategies on Chinese stock market."
+authors = ["Jimin Han <jimin.han@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[[tool.poetry.source]]
+default = true
+name = "aliyun"
+url = "https://mirrors.aliyun.com/pypi/simple/"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

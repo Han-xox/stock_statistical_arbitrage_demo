@@ -1,0 +1,68 @@
+## strategy basic settings
+holding_period: 10
+exec_price: vwap
+base_dataset_path: PATH_TO_BASE_DATASET
+
+## config for training
+train_config:
+
+  ## experiment tracking config
+  experiment:
+    tracking_uri: YOUR_TRACKING_URL_HERE
+    experiment_name: baseline
+    run_name: base_lightgbm
+    seed: 1024
+
+  ## data related
+  dataset:
+    features_path: PATH_TO_FEATURES
+    target_type: YOUR_TARGET_TYPE
+
+  ## cross validation config
+  cv:
+    cv_strategy: custom_split
+    description: 2017-2023, window 5 year, step 6 month
+    # 5 year training & 1/2 year validation & 1 month preventing data leak
+    custom_calendar:
+    # 2017
+      - [["20120101", "20161130"], ["20170101", "20170630"]]
+      - [["20120630", "20170531"], ["20170701", "20171231"]]
+    # 2018
+      - [["20130101", "20171130"], ["20180101", "20180630"]]
+      - [["20130630", "20180531"], ["20180701", "20181231"]]
+    # 2019
+      - [["20140101", "20181130"], ["20190101", "20190630"]]
+      - [["20140630", "20190531"], ["20190701", "20191231"]]
+    # 2020
+      - [["20150101", "20191130"], ["20200101", "20200630"]]
+      - [["20150630", "20200531"], ["20200701", "20201231"]]
+    # 2021
+      - [["20160101", "20201130"], ["20210101", "20210630"]]
+      - [["20160630", "20210531"], ["20210701", "20211231"]]
+    # 2022
+      - [["20170101", "20211130"], ["20220101", "20220630"]]
+      - [["20170630", "20220531"], ["20220701", "20221231"]]
+    # 2023
+      - [["20180101", "20221130"], ["20230101", "20230630"]]
+      - [["20180630", "20230531"], ["20230701", "20231231"]]
+
+
+  ## model config
+  model: 
+    class_path: lightgbm.LGBMRegressor
+    init_args:
+      objective: "mse"
+      n_estimators: 1000
+      num_leaves: 256
+      subsample: 0.6
+      colsample_bytree: 0.6
+      learning_rate: 0.005
+      n_jobs: 8
+      device: gpu
+      importance_type: gain
+
+  callbacks:
+    period: 10
+    patience: 20
+
+  save_things: True
